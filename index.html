@@ -12,8 +12,6 @@
   
   <!-- AMP JS Library -->
   <script async src="https://cdn.ampproject.org/v0.js"></script>
-  <!-- AMP Extension for Iframe (Diperlukan untuk background website) -->
-  <script async custom-element="amp-iframe" src="https://cdn.ampproject.org/v0/amp-iframe-0.1.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -21,7 +19,7 @@
   <style amp-custom>
     :root {
       --bg-dark: #070102;
-      --panel-bg: rgba(15, 3, 5, 0.95);
+      --panel-bg: rgba(12, 3, 5, 0.96);
       --neon-red: #ff003c;
       --neon-gold: #ffaa00;
       --text-light: #f8fafc;
@@ -44,12 +42,12 @@
       align-items: center;
       position: relative;
       overflow-x: hidden;
-      padding: 15px;
+      padding: 30px 15px;
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* 1. BACKGROUND LIVE WEBSITE (AMP-Iframe) */
-    .bg-iframe-wrapper {
+    /* 1. BACKGROUND LUAR */
+    .bg-image-wrapper {
       position: fixed;
       top: 0;
       left: 0;
@@ -57,90 +55,101 @@
       height: 100vh;
       z-index: -2;
       overflow: hidden;
-      pointer-events: none;
     }
 
-    .bg-iframe-wrapper amp-iframe {
+    .bg-image-wrapper amp-img {
       width: 100%;
       height: 100%;
+    }
+
+    .bg-image-wrapper amp-img img {
+      object-fit: cover;
       transform: scale(1.05);
-      filter: blur(8px) brightness(0.25) sepia(0.7) hue-rotate(-55deg);
+      filter: blur(12px) brightness(0.25) contrast(1.2);
     }
 
     .bg-overlay {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at center, rgba(15, 3, 5, 0.2) 0%, rgba(7, 13, 22, 0.95) 100%);
+      background: radial-gradient(circle at center, rgba(15, 3, 5, 0.1) 0%, rgba(7, 13, 22, 0.98) 100%);
       z-index: -1;
       pointer-events: none;
     }
 
-    /* 2. CONTAINER UTAMA (Mobile-Friendly & Optimal Shadow) */
+    /* 2. CONTAINER UTAMA */
     .main-container {
       position: relative;
       z-index: 10;
       width: 100%;
-      max-width: 440px; /* Lebar optimal untuk layar HP */
+      max-width: 430px;
       background: var(--panel-bg);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border: 1.5px solid rgba(255, 0, 60, 0.3);
-      border-radius: 20px;
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 2px solid rgba(255, 0, 60, 0.4);
+      border-radius: 24px;
       overflow: hidden;
-      /* Softened Shadow agar tidak terkesan kasar di mobile */
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 
-                  0 0 25px rgba(255, 0, 60, 0.15);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), 
+                  0 0 30px rgba(255, 0, 60, 0.25);
       animation: boxGlow 4s infinite alternate ease-in-out;
     }
 
     @keyframes boxGlow {
-      0% { border-color: rgba(255, 0, 60, 0.3); }
-      100% { border-color: rgba(255, 170, 0, 0.5); }
+      0% { border-color: rgba(255, 0, 60, 0.4); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 25px rgba(255, 0, 60, 0.2); }
+      100% { border-color: rgba(255, 170, 0, 0.6); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 35px rgba(255, 170, 0, 0.3); }
     }
 
     /* 3. TOMBOL KELUAR [X] */
     .close-btn {
       position: absolute;
-      top: 12px;
-      right: 12px;
-      width: 36px;
-      height: 36px;
-      background: rgba(7, 1, 2, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      top: 15px;
+      right: 15px;
+      width: 38px;
+      height: 38px;
+      background: rgba(7, 1, 2, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       color: #fff;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       text-decoration: none;
       cursor: pointer;
       z-index: 40;
-      transition: background-color 0.2s ease, transform 0.2s ease;
+      transition: all 0.2s ease;
     }
     .close-btn:active {
       background: var(--neon-red);
       transform: scale(0.9) rotate(90deg);
+      box-shadow: 0 0 12px var(--neon-red);
     }
 
-    /* 4. BANNER VISUAL ATAS (Aspek Rasio Responsif) */
+    /* 4. BANNER VISUAL ATAS */
     .visual-banner-container {
       position: relative;
       width: 100%;
-      /* Menyesuaikan proporsi 16:10 agar gambar pas di layar */
-      aspect-ratio: 1.6; 
+      aspect-ratio: 16 / 9;
       overflow: hidden;
+      background-color: #000;
     }
 
-    /* Gradient Overlay Lembut di atas Banner */
+    .visual-banner-container amp-img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .visual-banner-container amp-img img {
+      object-fit: cover;
+      object-position: center 25%;
+    }
+
     .banner-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(15, 3, 5, 0.6) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(12, 3, 5, 0.95) 100%);
       z-index: 2;
     }
 
-    /* Area Teks Branding Menumpuk di Atas Gambar */
     .banner-branding {
       position: absolute;
       inset: 0;
@@ -149,105 +158,161 @@
       flex-direction: column;
       justify-content: flex-end;
       align-items: center;
-      padding-bottom: 20px;
+      padding-bottom: 15px;
       text-align: center;
     }
 
     .logo {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3.5rem, 12vw, 4.4rem); /* Responsif terhadap layar lebar HP */
-      letter-spacing: 4px;
+      font-size: clamp(3.2rem, 11vw, 4.2rem);
+      letter-spacing: 5px;
       color: #fff;
-      line-height: 1;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8),
-                   0 0 20px var(--neon-red);
+      line-height: 0.95;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9),
+                   0 0 25px var(--neon-red);
     }
     .logo span {
       color: var(--neon-gold);
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8),
-                   0 0 20px var(--neon-gold);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9),
+                   0 0 25px var(--neon-gold);
     }
 
+    /* -------------------------------------------------------
+       ANIMASI 3D BERGERAK DARI KANAN KE KIRI PADA SUB-TITLE
+       ------------------------------------------------------- */
     .sub-title {
-      font-size: clamp(0.65rem, 2.5vw, 0.78rem);
+      font-size: clamp(0.65rem, 2.5vw, 0.75rem);
       text-transform: uppercase;
       letter-spacing: 3px;
-      color: var(--text-dim);
-      margin-top: 5px;
+      margin-top: 8px;
       font-weight: 700;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+      
+      /* Memberikan kedalaman 3D awal */
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      
+      /* Menghapus warna teks statis */
+      color: transparent;
+      
+      /* Efek gradasi warna kilau emas mengalir (Shimmer) */
+      background: linear-gradient(90deg, #ffd700 0%, #ffffff 50%, #ffd700 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      
+      /* Konfigurasi Animasi Terpadu */
+      animation: 
+        /* Animasi 1: Pergerakan 3D dari Kanan ke Kiri + Fade In */
+        gacor3DIntro 1.2s cubic-bezier(0.23, 1, 0.32, 1) 0.5s forwards,
+        /* Animasi 2: Efek kilau mengalir terus menerus setelah muncul */
+        shimmerText 4s linear infinite;
     }
 
-    /* 5. KONTEN AREA TENGAH */
+    /* Keyframe Pergerakan 3D & Fade In Modern */
+    @keyframes gacor3DIntro {
+      0% {
+        opacity: 0;
+        /* Mulai: Miring 3D ke kanan + posisi di kanan layar + terangkat sedikit */
+        transform: rotateY(50deg) translateX(50px) translateY(-10px) translateZ(-50px);
+      }
+      100% {
+        opacity: 1;
+        /* Selesai: Rata di tengah + sedikit kedalaman 3D konstan */
+        transform: rotateY(0deg) translateX(0) translateY(0) translateZ(10px);
+      }
+    }
+
+    /* Keyframe Efek Kilau Gradasi Emas (Shimmer) */
+    @keyframes shimmerText {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    /* ------------------------------------------------------- */
+
+    /* 5. AREA KONTEN TENGAH */
     .content-body {
-      padding: 20px 24px 30px 24px;
+      padding: 15px 24px 25px 24px;
       text-align: center;
     }
 
     .promo-headline {
-      font-size: clamp(1.1rem, 4.5vw, 1.25rem);
+      font-size: clamp(1.05rem, 4.2vw, 1.25rem);
       font-weight: 900;
       color: var(--neon-gold);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      line-height: 1.3;
+      line-height: 1.35;
       margin-bottom: 12px;
+      text-shadow: 0 0 15px rgba(255, 170, 0, 0.2);
     }
     
     .promo-desc {
-      font-size: clamp(0.8rem, 3.2vw, 0.85rem);
+      font-size: clamp(0.78rem, 3.1vw, 0.83rem);
       color: #cbd5e1;
-      line-height: 1.5;
+      line-height: 1.6;
       margin-bottom: 25px;
     }
 
-    /* 6. TOMBOL AKSI UTAMA DENGAN RESPON SENTUH (MOBILE-TAP EFFECT) */
+    /* 6. TOMBOL AKSI UTAMA */
     .btn-group {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 15px;
     }
 
     .btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 14px 20px;
+      padding: 15px 20px;
       font-size: clamp(0.95rem, 3.5vw, 1.05rem);
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 2px;
       color: #fff;
       text-decoration: none;
-      border-radius: 10px;
+      border-radius: 12px;
       border: none;
       cursor: pointer;
-      transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.15s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    /* Mobile active state (memberikan feedback instan saat ditekan jari) */
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0) 100%);
+      transform: skewX(-25deg);
+      animation: shine 3s infinite ease-in-out;
+    }
+
+    .btn-login::after {
+      animation-delay: 1.5s;
+    }
+
+    @keyframes shine {
+      0% { left: -150%; }
+      30% { left: 150%; }
+      100% { left: 150%; }
+    }
+
     .btn:active {
-      transform: scale(0.96) translateY(1px);
-    }
-
-    /* Animasi denyut cahaya lembut */
-    @keyframes blink-red {
-      0%, 100% { box-shadow: 0 0 10px rgba(255, 0, 60, 0.4); }
-      50% { box-shadow: 0 0 3px rgba(255, 0, 60, 0.15); }
-    }
-    @keyframes blink-gold {
-      0%, 100% { box-shadow: 0 0 10px rgba(255, 170, 0, 0.4); }
-      50% { box-shadow: 0 0 3px rgba(255, 170, 0, 0.15); }
+      transform: scale(0.97) translateY(1px);
     }
 
     .btn-daftar {
-      background: linear-gradient(45deg, #b30024, var(--neon-gold));
-      animation: blink-gold 2.5s infinite ease-in-out;
+      background: linear-gradient(135deg, #b30024, var(--neon-gold));
     }
 
     .btn-login {
-      background: linear-gradient(45deg, #660014, var(--neon-red));
-      animation: blink-red 2.2s infinite ease-in-out;
+      background: linear-gradient(135deg, #660014, var(--neon-red));
     }
 
     .security-note {
@@ -256,57 +321,51 @@
       color: #64748b;
       letter-spacing: 0.5px;
       text-transform: uppercase;
+      font-weight: 600;
     }
 
-    /* Media query tambahan untuk layar yang sangat kecil (seperti iPhone SE) */
     @media (max-width: 360px) {
-      .content-body {
-        padding: 15px 15px 25px 15px;
-      }
-      .logo {
-        margin-bottom: -5px;
-      }
+      .content-body { padding: 12px 15px 20px 15px; }
+      .promo-headline { margin-bottom: 8px; }
+      .promo-desc { margin-bottom: 18px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Iframe Versi AMP -->
-  <div class="bg-iframe-wrapper">
-    <amp-iframe width="100" height="100"
-                layout="responsive"
-                sandbox="allow-scripts allow-same-origin"
-                resizable
-                src="https://wawasanlagi.com">
-      <div placeholder></div>
-    </amp-iframe>
+  <!-- Background Luar Presisi -->
+  <div class="bg-image-wrapper">
+    <amp-img src="image_21ad7f.jpg" 
+             layout="fill" 
+             alt="Outer Background Wawasan4D">
+    </amp-img>
   </div>
   <div class="bg-overlay"></div>
 
-  <!-- Container Utama -->
+  <!-- Kontainer Utama Kotak Landing Page -->
   <main class="main-container">
     
-    <!-- Tombol Keluar -->
     <a href="https://wawasanlagi.com" class="close-btn" title="Tutup dan Buka Web Utama">&times;</a>
 
-    <!-- Banner Utama AMP-Img -->
+    <!-- Banner Visual Atas -->
     <div class="visual-banner-container">
       <div class="banner-overlay"></div>
+      
       <amp-img src="image_21ad7f.jpg" 
-               width="440" 
-               height="275" 
+               width="736" 
+               height="414" 
                layout="responsive" 
-               alt="Banner Wawasan4D">
+               alt="Banner Karakter Wawasan4D">
       </amp-img>
       
-      <!-- Branding Logo Menumpuk di Atas Gambar -->
       <div class="banner-branding">
         <h1 class="logo">WAWASAN<span>4D</span></h1>
+        <!-- Teks dengan efek baru 3D bergerak dari kanan -->
         <div class="sub-title">Situs Gacor Hubungan Digital Anda</div>
       </div>
     </div>
 
-    <!-- Area Konten & Tombol -->
+    <!-- Area Konten & Informasi -->
     <div class="content-body">
       <h2 class="promo-headline">Kemenangan Besar Anda Lebih Dekat dari yang Anda Bayangkan.</h2>
       
@@ -314,7 +373,7 @@
         Keamanan Anda adalah prioritas utama kami. Nikmati pengalaman bermain kelas dunia dengan sistem tercanggih yang menjamin kenyamanan Anda tanpa batas. Dengan performa engine yang stabil dan akses super cepat, setiap peluang menang kini ada di genggaman Anda setiap hari.
       </p>
 
-      <!-- Kelompok Tombol Utama -->
+      <!-- Kelompok Tombol Interaktif -->
       <div class="btn-group">
         <a href="https://wawasanlagi.com" class="btn btn-daftar" target="_blank" rel="noopener">DAFTAR AKUN</a>
         <a href="https://wawasanlagi.com" class="btn btn-login" target="_blank" rel="noopener">LOGIN MASUK</a>
